@@ -8,6 +8,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EntyRecmaesusuarimcDto {
+
     private Integer recUnikeyRemc;
     private String  recNroregRemc;
     private String  recNroregReus;
@@ -23,13 +24,13 @@ public class EntyRecmaesusuarimcDto {
     private String  recGenmusReus;
     private Date    recFecagiRemc;
     private Date    recFecagfRemc;
-    private Integer recDiapunRemc;
+    private String  recDiapunRemc;
     private String  recKeyfilRemc;
     private String  recKeytmpRemc;
     private String  recKeytm1Remc;
     private String  recKeytm2Remc;
     private String  recKeytm3Remc;
     private String  recKeytm4Remc;
-    private String  recErrauxRemc;
+    //private String  recErrauxRemc;
     private Integer  recEstregRemc;
 }

@@ -1,5 +1,4 @@
 package com.makiia.modules.filter.usecase;
-
 import com.makiia.crosscutting.domain.model.EntyRecmaesusuarimcDto;
 import com.makiia.modules.bus.services.UseCase;
 import com.makiia.modules.bus.services.UsecaseServices;

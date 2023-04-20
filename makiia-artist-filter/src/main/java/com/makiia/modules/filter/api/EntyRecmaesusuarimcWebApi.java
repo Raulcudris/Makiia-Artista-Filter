@@ -33,14 +33,14 @@ public class EntyRecmaesusuarimcWebApi {
     @ApiOperation(httpMethod = ApiConstants.GET_HTTP, value = ApiConstants.GET_ALL_DESC, notes = "")
     public ResponseEntity<EntyRecmaesusuarimcResponse> getAll(@RequestParam(value = "currentpage",required = false,defaultValue = "0") int currentPage,
                                                               @RequestParam(value = "pagesize",required = false,defaultValue = "10")  int pagesize,
-                                                              @RequestParam(value = "parameter",required = false,defaultValue = "KEY") String parameter,
+                                                              @RequestParam(value = "parameter",required = false) int parameter,
                                                               @RequestParam(value = "filter",required = false ) String filter)
      throws EBusinessException, MicroEventException {
           return new ResponseEntity<>(service.getAll(currentPage, pagesize, parameter ,filter), HttpStatus.OK);
     }
     @GetMapping(Constants.ID_PRICES_PARAM)
     @ApiOperation(httpMethod = ApiConstants.GET_HTTP, value = ApiConstants.GET_DESC, notes = "")
-    public ResponseEntity<EntyRecmaesusuarimcDto>get(@PathVariable(Constants.ID_REST) String id)
+    public ResponseEntity<EntyRecmaesusuarimcDto>get(@PathVariable(Constants.ID_REST) Integer id)
             throws EBusinessException, MicroEventException {
         return new ResponseEntity<>(service.get(id), HttpStatus.OK);
     }
@@ -55,14 +55,14 @@ public class EntyRecmaesusuarimcWebApi {
     //@PutMapping(Constants.ID_PRICES_PARAM)
     @PutMapping(Constants.ID_PRICES_PARAM)
     @ApiOperation(httpMethod = ApiConstants.PUT_HTTP, value = ApiConstants.PUT_DESC, notes = "")
-    public ResponseEntity<EntyRecmaesusuarimcDto> update(@PathVariable(Constants.ID_REST) String id, @RequestBody EntyRecmaesusuarimcDto dto)
+    public ResponseEntity<EntyRecmaesusuarimcDto> update(@PathVariable(Constants.ID_REST) Integer id, @RequestBody EntyRecmaesusuarimcDto dto)
             throws EBusinessException, MicroEventException {
         return new ResponseEntity<>(service.update(id, dto), HttpStatus.CREATED);
     }
 
     @DeleteMapping(Constants.ID_PRICES_PARAM)
     @ApiOperation(httpMethod = ApiConstants.DELETE_HTTP, value = ApiConstants.DELETE_DESC, notes = "")
-    public void delete(@PathVariable(Constants.ID_REST) String id) throws EBusinessException, MicroEventException {
+    public void delete(@PathVariable(Constants.ID_REST) Integer id) throws EBusinessException, MicroEventException {
         service.delete(id);
     }
 

@@ -1,10 +1,11 @@
 package com.makiia.crosscutting.domain.model;
-import com.makiia.crosscutting.persistence.entity.EntyRecmaesusuarimc;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
+
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +16,7 @@ public class EntyRecmaesusuarimcResponse {
     private  String rspParentKey = "NA";
     private  String rspAppKey = "NA";
     private  PaginationResponse rspPagination = new PaginationResponse();
-    private  List<EntyRecmaesusuarimc> rspData;
+    private List<EntyRecmaesusuarimcDto> rspData;
+
 }
 

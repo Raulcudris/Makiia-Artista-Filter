@@ -64,7 +64,7 @@ public class UsecaseServices <T, K> {
      * @throws EBusinessException  excepcion
      * @throws MicroEventException excepcion
      */
-    public EntyRecmaesusuarimcResponse getAll(int currentPage , int pageSize, String parameter , String filter) throws EBusinessException, MicroEventException {
+    public EntyRecmaesusuarimcResponse getAll(int currentPage , int pageSize, int parameter , String filter) throws EBusinessException, MicroEventException {
         String transactionalId = UUID.randomUUID().toString();
 
         try {
@@ -105,7 +105,7 @@ public class UsecaseServices <T, K> {
      * @throws EBusinessException  excepcion
      * @throws MicroEventException excepcion
      */
-    public T get(String id) throws EBusinessException, MicroEventException {
+    public T get(Integer id) throws EBusinessException, MicroEventException {
         String transactionalId = UUID.randomUUID().toString();
 
         try {
@@ -280,7 +280,7 @@ public class UsecaseServices <T, K> {
      * @throws EBusinessException  excepcion
      * @throws MicroEventException excepcion
      */
-    public T update(String id, T dto) throws EBusinessException, MicroEventException {
+    public T update(Integer id, T dto) throws EBusinessException, MicroEventException {
         String transactionalId = UUID.randomUUID().toString();
 
         try {
@@ -319,7 +319,7 @@ public class UsecaseServices <T, K> {
      * @throws EBusinessException  excepcion
      * @throws MicroEventException excepcion
      */
-    public void delete(String id) throws MicroEventException, EBusinessException {
+    public void delete(Integer id) throws MicroEventException, EBusinessException {
         String transactionalId = UUID.randomUUID().toString();
 
         try {

@@ -7,16 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
-public interface EntyRecmaesusuarimcRepository extends JpaRepository<EntyRecmaesusuarimc,String>
+public interface EntyRecmaesusuarimcRepository extends JpaRepository<EntyRecmaesusuarimc,Integer>
 {
-        String FILTER_COUNTRIES_CODCOUNTRIES_QUERY = "select c from EntySispaisamaestro c  where c.sisCodpaiSipa  = ?1";
-        @Query(value = FILTER_COUNTRIES_CODCOUNTRIES_QUERY)
-        Page<EntyRecmaesusuarimc> findCodCountry(String parameter, Pageable pageable);
-
-        String FILTER_COUNTRIES_NAMECOUNTRY_QUERY = "select c from EntySispaisamaestro c where UPPER(c.sisNombreSipa) like concat('%',upper(?1),'%')";
-        @Query(value = FILTER_COUNTRIES_NAMECOUNTRY_QUERY)
-        Page<EntyRecmaesusuarimc> findNameCountry(String filter, Pageable pageable);
-
-        Optional<EntyRecmaesusuarimc> findById(String id);
+        String FILTER_USUARIO_RECUNIKEYREMC_QUERY = "select c from EntyRecmaesusuarimc c  where c.recUnikeyRemc  = ?1";
+        @Query(value = FILTER_USUARIO_RECUNIKEYREMC_QUERY)
+        Page<EntyRecmaesusuarimc> findByRecUnikeyRemc(Integer parameter, Pageable pageable);
+        String FILTER_USUARIO_RECNROREGREMC_QUERY = "select c from EntyRecmaesusuarimc c where UPPER(c.recNroregRemc) like concat('%',upper(?1),'%')";
+        @Query(value = FILTER_USUARIO_RECNROREGREMC_QUERY)
+        Page<EntyRecmaesusuarimc> findByRecNroregRemc(String filter, Pageable pageable);
+        Optional<EntyRecmaesusuarimc> findById(Integer id);
 
 }

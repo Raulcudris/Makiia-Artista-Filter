@@ -1,6 +1,5 @@
 package com.makiia.modules.filter.dataproviders.jpa;
 import com.makiia.crosscutting.domain.model.EntyRecmaesusuarimcDto;
-import com.makiia.crosscutting.domain.model.EntySispaisamaestroDto;
 import com.makiia.crosscutting.domain.model.EntyRecmaesusuarimcResponse;
 import com.makiia.crosscutting.domain.model.PaginationResponse;
 import com.makiia.crosscutting.exceptions.DataProvider;
@@ -31,15 +30,15 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
     @Autowired
     private EntyRecmaesusuarimcRepository repository;
     @Autowired
-    @Qualifier("entySispaisamaestroSaveResponseTranslate")
-    private Translator<EntyRecmaesusuarimc, EntySispaisamaestroDto>saveResponseTranslate;
+    @Qualifier("entyRecmaesusuarimcSaveResponseTranslate")
+    private Translator<EntyRecmaesusuarimc, EntyRecmaesusuarimcDto>saveResponseTranslate;
     @Autowired
-    @Qualifier("entySispaisamaestroDtoToEntityTranslate")
-    private Translator<EntySispaisamaestroDto, EntyRecmaesusuarimc>dtoToEntityTranslate;
+    @Qualifier("entyRecmaesusuarimcDtoToEntityTranslate")
+    private Translator<EntyRecmaesusuarimcDto, EntyRecmaesusuarimc>dtoToEntityTranslate;
 
     @Override
-    public List<EntySispaisamaestroDto> getAll() throws EBusinessException {
-        List<EntySispaisamaestroDto> dtos = new ArrayList<>();
+    public List<EntyRecmaesusuarimcDto> getAll() throws EBusinessException {
+        List<EntyRecmaesusuarimcDto> dtos = new ArrayList<>();
         try {
             List<EntyRecmaesusuarimc> responses = (List<EntyRecmaesusuarimc>) repository.findAll();
 
@@ -60,18 +59,19 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
     }
 
     @Override
-    public EntyRecmaesusuarimcResponse getAll(int currentPage , int totalPageSize , String parameter, String filter) throws EBusinessException {
+    public EntyRecmaesusuarimcResponse getAll(int currentPage , int totalPageSize , int parameter, String filter) throws EBusinessException {
         try {
             currentPage = currentPage - 1;
             Pageable pageable = PageRequest.of(currentPage, totalPageSize);
             Page<EntyRecmaesusuarimc> ResponsePage = null;
-            if (parameter.equals("KEY")) {
-                ResponsePage = repository.findNameCountry(filter, pageable);
+            if (parameter == 0) {
+                ResponsePage = repository.findByRecNroregRemc(filter, pageable);
             }else {
-                ResponsePage = repository.findCodCountry(parameter,pageable);
+                ResponsePage = repository.findByRecUnikeyRemc(parameter,pageable);
             }
+
             List<EntyRecmaesusuarimc> ListPage = ResponsePage.getContent();
-            List<EntySispaisamaestroDto> content = ListPage.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
+            List<EntyRecmaesusuarimcDto> content  = ListPage.stream().map(p ->mapToDto(p)).collect(Collectors.toList());
 
             EntyRecmaesusuarimcResponse response = new EntyRecmaesusuarimcResponse();
             response.setRspMessage(response.getRspMessage());
@@ -84,6 +84,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
             response.setRspData(content);
             return response;
 
+
         } catch (PersistenceException | DataAccessException e) {
             throw ExceptionBuilder.builder()
                     .withMessage(SearchMessages.SEARCH_ERROR_DESCRIPTION)
@@ -95,7 +96,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
 
 
     @Override
-    public EntyRecmaesusuarimcDto get(String id) throws EBusinessException {
+    public EntyRecmaesusuarimcDto get(Integer id) throws EBusinessException {
         try {
             return saveResponseTranslate.translate(repository.findById(id).get());
         } catch (PersistenceException | DataAccessException e) {
@@ -143,50 +144,125 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
     }
 
     @Override
-    public EntyRecmaesusuarimcDto update(String id, EntySispaisamaestroDto dto) throws EBusinessException {
+    public EntyRecmaesusuarimcDto update(Integer id, EntyRecmaesusuarimcDto dto) throws EBusinessException {
         try {
             EntyRecmaesusuarimc entity = dtoToEntityTranslate.translate(dto);
             EntyRecmaesusuarimc old = repository.findById(id).get();
 
+            old.setRecUnikeyRemc(
+                    Objects.nonNull(dto.getRecUnikeyRemc())&& !entity.getRecUnikeyRemc().equals(0)
+                            ? entity.getRecUnikeyRemc()
+                            :old.getRecUnikeyRemc());
+
+            old.setRecNroregRemc(
+                    Objects.nonNull(dto.getRecNroregRemc())&& !entity.getRecNroregRemc().isEmpty()
+                            ? entity.getRecNroregRemc()
+                            :old.getRecNroregRemc());
+
+            old.setRecNroregReus(
+                    Objects.nonNull(dto.getRecNtokenReus())&& !entity.getRecNtokenReus().isEmpty()
+                            ? entity.getRecNtokenReus()
+                            :old.getRecNtokenReus());
+
+            old.setRecTipfilRemc(
+                    Objects.nonNull(dto.getRecTipfilRemc())&& !entity.getRecTipfilRemc().isEmpty()
+                            ? entity.getRecTipfilRemc()
+                            :old.getRecTipfilRemc());
+
+            old.setRecModuloRemc(
+                    Objects.nonNull(dto.getRecModuloRemc())&& !entity.getRecModuloRemc().isEmpty()
+                            ? entity.getRecModuloRemc()
+                            :old.getRecModuloRemc());
 
             old.setSisCodpaiSipa(
                     Objects.nonNull(dto.getSisCodpaiSipa())&& !entity.getSisCodpaiSipa().isEmpty()
                             ? entity.getSisCodpaiSipa()
                             :old.getSisCodpaiSipa());
-            old.setSisAbreviSipa(
-                    Objects.nonNull(dto.getSisAbreviSipa())&& !entity.getSisAbreviSipa().isEmpty()
-                            ? entity.getSisAbreviSipa()
-                            :old.getSisAbreviSipa());
-            old.setSisNombreSipa(
-                    Objects.nonNull(dto.getSisNombreSipa())&& !entity.getSisNombreSipa().isEmpty()
-                            ? entity.getSisNombreSipa()
-                            :old.getSisNombreSipa());
-            old.setSisIndicaSipa(
-                    Objects.nonNull(dto.getSisIndicaSipa())&& !entity.getSisIndicaSipa().isEmpty()
-                            ?entity.getSisIndicaSipa()
-                            :old.getSisIndicaSipa());
-            old.setSisNombrelSipa(
-                    Objects.nonNull(dto.getSisNombrelSipa())&& !entity.getSisNombrelSipa().isEmpty()
-                            ?entity.getSisNombrelSipa()
-                            :old.getSisNombrelSipa());
-            old.setSisCodconSico(
-                    Objects.nonNull(dto.getSisCodconSico()) && !entity.getSisCodconSico().isEmpty()
-                            ?entity.getSisCodconSico()
-                            :old.getSisCodconSico());
-            old.setSisTimezoSipa(
-                    Objects.nonNull(dto.getSisTimezoSipa()) && !entity.getSisTimezoSipa().isEmpty()
-                            ? entity.getSisTimezoSipa()
-                            : old.getSisTimezoSipa());
 
-            old.setSisEaradiSipa(
-                    Objects.nonNull(dto.getSisEaradiSipa()) && !entity.getSisEaradiSipa().equals(0)
-                            ?entity.getSisEaradiSipa()
-                            :old.getSisEaradiSipa());
+            old.setSisIdedptSidp(
+                    Objects.nonNull(dto.getSisIdedptSidp())&& !entity.getSisIdedptSidp().isEmpty()
+                            ? entity.getSisIdedptSidp()
+                            :old.getSisIdedptSidp());
 
-            old.setSisSecdetSipa(
-                    Objects.nonNull(dto.getSisSecdetSipa()) && !entity.getSisSecdetSipa().equals(0)
-                            ?entity.getSisSecdetSipa()
-                            :old.getSisSecdetSipa());
+            old.setSisCodproSipr(
+                    Objects.nonNull(dto.getSisCodproSipr())&& !entity.getSisCodproSipr().isEmpty()
+                            ? entity.getSisCodproSipr()
+                            :old.getSisCodproSipr());
+
+            old.setRecGeodisRemc(
+                    Objects.nonNull(dto.getRecGeodisRemc())&& !entity.getRecGeodisRemc().equals(0)
+                            ? entity.getRecGeodisRemc()
+                            :old.getRecGeodisRemc());
+
+            old.setRecGeolatReus(
+                    Objects.nonNull(dto.getRecGeolatReus())&& !entity.getRecGeolatReus().equals(0)
+                            ? entity.getRecGeolatReus()
+                            :old.getRecGeolatReus());
+
+            old.setRecGeolonReus(
+                    Objects.nonNull(dto.getRecGeolonReus())&& !entity.getRecGeolonReus().equals(0)
+                            ? entity.getRecGeolonReus()
+                            :old.getRecGeolonReus());
+
+            old.setRecGenmusReus(
+                    Objects.nonNull(dto.getRecGenmusReus())&& !entity.getRecGenmusReus().isEmpty()
+                            ? entity.getRecGenmusReus()
+                            :old.getRecGenmusReus());
+
+            old.setRecFecagiRemc(
+                    Objects.nonNull(dto.getRecFecagiRemc())&& !entity.getRecFecagiRemc().equals(0)
+                            ? entity.getRecFecagiRemc()
+                            :old.getRecFecagiRemc());
+
+            old.setRecFecagfRemc(
+                    Objects.nonNull(dto.getRecFecagfRemc())&& !entity.getRecFecagfRemc().equals(0)
+                            ? entity.getRecFecagfRemc()
+                            :old.getRecFecagfRemc());
+
+            old.setRecDiapunRemc(
+                    Objects.nonNull(dto.getRecDiapunRemc())&& !entity.getRecDiapunRemc().equals(0)
+                            ? entity.getRecDiapunRemc()
+                            :old.getRecDiapunRemc());
+
+            old.setRecKeyfilRemc(
+                    Objects.nonNull(dto.getRecKeyfilRemc())&& !entity.getRecKeyfilRemc().isEmpty()
+                            ? entity.getRecKeyfilRemc()
+                            :old.getRecKeyfilRemc());
+
+            old.setRecKeytmpRemc(
+                    Objects.nonNull(dto.getRecKeytmpRemc())&& !entity.getRecKeytmpRemc().isEmpty()
+                            ? entity.getRecKeytmpRemc()
+                            :old.getRecKeytmpRemc());
+
+            old.setRecKeytm1Remc(
+                    Objects.nonNull(dto.getRecKeytm1Remc())&& !entity.getRecKeytm1Remc().isEmpty()
+                            ? entity.getRecKeytm1Remc()
+                            :old.getRecKeytm1Remc());
+
+            old.setRecKeytm2Remc(
+                    Objects.nonNull(dto.getRecKeytm2Remc())&& !entity.getRecKeytm2Remc().isEmpty()
+                            ? entity.getRecKeytm2Remc()
+                            :old.getRecKeytm2Remc());
+
+            old.setRecKeytm3Remc(
+                    Objects.nonNull(dto.getRecKeytm3Remc())&& !entity.getRecKeytm3Remc().isEmpty()
+                            ? entity.getRecKeytm3Remc()
+                            :old.getRecKeytm3Remc());
+
+            old.setRecKeytm4Remc(
+                    Objects.nonNull(dto.getRecKeytm4Remc())&& !entity.getRecKeytm4Remc().isEmpty()
+                            ? entity.getRecKeytm4Remc()
+                            :old.getRecKeytm4Remc());
+
+            /*old.setRecErrauxRemc(
+                    Objects.nonNull(dto.getRecErrauxRemc())&& !entity.getRecErrauxRemc().isEmpty()
+                            ? entity.getRecErrauxRemc()
+                            :old.getRecErrauxRemc());*/
+
+            old.setRecEstregRemc(
+                    Objects.nonNull(dto.getRecEstregRemc())&& !entity.getRecEstregRemc().equals(0)
+                            ? entity.getRecEstregRemc()
+                            :old.getRecEstregRemc());
 
             return saveResponseTranslate.translate(repository.save(old));
         } catch (PersistenceException | DataAccessException e) {
@@ -200,7 +276,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
     }
 
     @Override
-    public void delete(String id) throws EBusinessException {
+    public void delete(Integer id) throws EBusinessException {
         try {
             repository.delete(repository.findById(id).get());
         } catch (PersistenceException | DataAccessException e) {
@@ -212,21 +288,34 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
         }
     }
 
-    private EntyRecmaesusuarimcDto mapToDto(EntyRecmaesusuarimc entySispaisamaestro){
-        EntyRecmaesusuarimcDto dto = new EntySispaisamaestroDto();
+    private EntyRecmaesusuarimcDto mapToDto(EntyRecmaesusuarimc entyRecmaesusuarimc){
+        EntyRecmaesusuarimcDto dto = new EntyRecmaesusuarimcDto();
 
-        entity.setSisCodpaiSipa(entySispaisamaestro.getSisCodpaiSipa());
-        entity.setSisAbreviSipa(entySispaisamaestro.getSisAbreviSipa());
-        entity.setSisNombreSipa(entySispaisamaestro.getSisNombreSipa());
-        entity.setSisCodpaiSipa(entySispaisamaestro.getSisCodpaiSipa());
-        entity.setSisIndicaSipa(entySispaisamaestro.getSisIndicaSipa());
-        entity.setSisNombrelSipa(entySispaisamaestro.getSisNombrelSipa());
-        entity.setSisCodconSico(entySispaisamaestro.getSisCodconSico());
-        entity.setSisTimezoSipa(entySispaisamaestro.getSisTimezoSipa());
-        entity.setSisEaradiSipa(entySispaisamaestro.getSisEaradiSipa());
-        entity.setSisSecdetSipa(entySispaisamaestro.getSisSecdetSipa());
-        entity.setSisEstregSipa(entySispaisamaestro.getSisEstregSipa());
-        return  entity;
+        dto.setRecUnikeyRemc(entyRecmaesusuarimc.getRecUnikeyRemc());
+        dto.setRecNroregRemc(entyRecmaesusuarimc.getRecNroregRemc());
+        dto.setRecNroregReus(entyRecmaesusuarimc.getRecNroregReus());
+        dto.setRecNtokenReus(entyRecmaesusuarimc.getRecNtokenReus());
+        dto.setRecTipfilRemc(entyRecmaesusuarimc.getRecTipfilRemc());
+        dto.setRecModuloRemc(entyRecmaesusuarimc.getRecModuloRemc());
+        dto.setSisCodpaiSipa(entyRecmaesusuarimc.getSisCodpaiSipa());
+        dto.setSisIdedptSidp(entyRecmaesusuarimc.getSisIdedptSidp());
+        dto.setSisCodproSipr(entyRecmaesusuarimc.getSisCodproSipr());
+        dto.setRecGeodisRemc(entyRecmaesusuarimc.getRecGeodisRemc());
+        dto.setRecGeolatReus(entyRecmaesusuarimc.getRecGeolatReus());
+        dto.setRecGeolonReus(entyRecmaesusuarimc.getRecGeolonReus());
+        dto.setRecGenmusReus(entyRecmaesusuarimc.getRecGenmusReus());
+        dto.setRecFecagiRemc(entyRecmaesusuarimc.getRecFecagiRemc());
+        dto.setRecFecagfRemc(entyRecmaesusuarimc.getRecFecagfRemc());
+        dto.setRecDiapunRemc(entyRecmaesusuarimc.getRecDiapunRemc());
+        dto.setRecKeyfilRemc(entyRecmaesusuarimc.getRecKeyfilRemc());
+        dto.setRecKeytmpRemc(entyRecmaesusuarimc.getRecKeytmpRemc());
+        dto.setRecKeytm1Remc(entyRecmaesusuarimc.getRecKeytm1Remc());
+        dto.setRecKeytm2Remc(entyRecmaesusuarimc.getRecKeytm2Remc());
+        dto.setRecKeytm3Remc(entyRecmaesusuarimc.getRecKeytm3Remc());
+        dto.setRecKeytm4Remc(entyRecmaesusuarimc.getRecKeytm4Remc());
+        ///dto.setRecErrauxRemc(entyRecmaesusuarimc.getRecErrauxRemc());
+        dto.setRecEstregRemc(entyRecmaesusuarimc.getRecEstregRemc());
+        return  dto;
     }
 
     public static PaginationResponse headResponse(int currentPage    , int totalPageSize ,

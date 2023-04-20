@@ -80,7 +80,7 @@ public class EntyRecmaesusuarimc implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "rec_diapun_remc")
-    private Integer  recDiapunRemc;
+    private String  recDiapunRemc;
 
     @Basic(optional = false)
     @Column(name = "rec_keyfil_remc")
@@ -96,7 +96,7 @@ public class EntyRecmaesusuarimc implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "rec_keytm2_remc")
-    private Integer  recKeytm2Remc;
+    private String  recKeytm2Remc;
 
     @Basic(optional = false)
     @Column(name = "rec_keytm3_remc")

@@ -1,11 +1,12 @@
 package com.makiia.crosscutting.persistence.entity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 @Entity
@@ -72,10 +73,12 @@ public class EntyRecmaesusuarimc implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "rec_fecagi_remc")
+    @JsonFormat(pattern="yyyy/MM/dd")
     private Date recFecagiRemc;
 
     @Basic(optional = false)
     @Column(name = "rec_fecagf_remc")
+    @JsonFormat(pattern="yyyy/MM/dd")
     private Date  recFecagfRemc;
 
     @Basic(optional = false)

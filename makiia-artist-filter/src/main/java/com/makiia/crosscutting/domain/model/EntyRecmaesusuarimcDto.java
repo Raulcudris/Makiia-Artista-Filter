@@ -1,6 +1,7 @@
 package com.makiia.crosscutting.domain.model;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-import java.util.Date;
+import java.sql.Date;
 
 @Data
 @Builder
@@ -22,8 +23,10 @@ public class EntyRecmaesusuarimcDto {
     private Double  recGeolatReus;
     private Double  recGeolonReus;
     private String  recGenmusReus;
-    private Date    recFecagiRemc;
-    private Date    recFecagfRemc;
+    @JsonFormat(pattern="yyyy/MM/dd")
+    private Date recFecagiRemc;
+    @JsonFormat(pattern="yyyy/MM/dd")
+    private Date   recFecagfRemc;
     private String  recDiapunRemc;
     private String  recKeyfilRemc;
     private String  recKeytmpRemc;
@@ -31,6 +34,6 @@ public class EntyRecmaesusuarimcDto {
     private String  recKeytm2Remc;
     private String  recKeytm3Remc;
     private String  recKeytm4Remc;
-    //private String  recErrauxRemc;
-    private Integer  recEstregRemc;
+    private String  recErrauxRemc;
+    private Integer recEstregRemc;
 }

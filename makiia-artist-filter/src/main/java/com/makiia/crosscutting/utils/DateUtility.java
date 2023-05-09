@@ -1,9 +1,7 @@
 package com.makiia.crosscutting.utils;
-
 import com.makiia.crosscutting.domain.constants.Constants;
 import lombok.experimental.UtilityClass;
 import lombok.extern.log4j.Log4j2;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;

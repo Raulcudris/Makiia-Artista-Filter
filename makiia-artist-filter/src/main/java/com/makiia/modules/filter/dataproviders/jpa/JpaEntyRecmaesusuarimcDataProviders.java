@@ -57,7 +57,6 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
                     .buildBusinessException();
         }
     }
-
     @Override
     public EntyRecmaesusuarimcResponse getAll(int currentPage , int totalPageSize , int parameter, String filter) throws EBusinessException {
         try {
@@ -93,8 +92,6 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
                     .buildBusinessException();
         }
     }
-
-
     @Override
     public EntyRecmaesusuarimcDto get(Integer id) throws EBusinessException {
         try {
@@ -254,10 +251,10 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
                             ? entity.getRecKeytm4Remc()
                             :old.getRecKeytm4Remc());
 
-            /*old.setRecErrauxRemc(
+            old.setRecErrauxRemc(
                     Objects.nonNull(dto.getRecErrauxRemc())&& !entity.getRecErrauxRemc().isEmpty()
                             ? entity.getRecErrauxRemc()
-                            :old.getRecErrauxRemc());*/
+                            :old.getRecErrauxRemc());
 
             old.setRecEstregRemc(
                     Objects.nonNull(dto.getRecEstregRemc())&& !entity.getRecEstregRemc().equals(0)
@@ -313,7 +310,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
         dto.setRecKeytm2Remc(entyRecmaesusuarimc.getRecKeytm2Remc());
         dto.setRecKeytm3Remc(entyRecmaesusuarimc.getRecKeytm3Remc());
         dto.setRecKeytm4Remc(entyRecmaesusuarimc.getRecKeytm4Remc());
-        ///dto.setRecErrauxRemc(entyRecmaesusuarimc.getRecErrauxRemc());
+        dto.setRecErrauxRemc(entyRecmaesusuarimc.getRecErrauxRemc());
         dto.setRecEstregRemc(entyRecmaesusuarimc.getRecEstregRemc());
         return  dto;
     }

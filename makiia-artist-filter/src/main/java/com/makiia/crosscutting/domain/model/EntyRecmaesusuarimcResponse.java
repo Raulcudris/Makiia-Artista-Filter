@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.util.List;
 
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,7 +15,7 @@ public class EntyRecmaesusuarimcResponse {
     private  String rspParentKey = "NA";
     private  String rspAppKey = "NA";
     private  PaginationResponse rspPagination = new PaginationResponse();
-    private List<EntyRecmaesusuarimcDto> rspData;
+    private  List<EntyRecmaesusuarimcDto> rspData;
 
 }
 

@@ -1,7 +1,7 @@
 package com.makiia.modules.filter.api;
-
 import com.makiia.crosscutting.domain.constants.ApiConstants;
 import com.makiia.crosscutting.domain.constants.Constants;
+import com.makiia.crosscutting.domain.model.EntyDeleteDto;
 import com.makiia.crosscutting.domain.model.EntyRecmaesusuarimcDto;
 import com.makiia.crosscutting.domain.model.EntyRecmaesusuarimcResponse;
 import com.makiia.crosscutting.exceptions.Main.EBusinessException;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Log4j2
@@ -47,25 +46,21 @@ public class EntyRecmaesusuarimcWebApi {
 
     @PostMapping("create")
     @ApiOperation(httpMethod = ApiConstants.POST_HTTP, value = ApiConstants.POST_DESC, notes = "")
-    public ResponseEntity<EntyRecmaesusuarimcDto> create(@RequestBody EntyRecmaesusuarimcDto dto)
+    public ResponseEntity<EntyRecmaesusuarimcResponse> create(@RequestBody EntyRecmaesusuarimcResponse dto)
             throws EBusinessException, MicroEventException {
-        return new ResponseEntity<>(service.create(dto), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.saveBefore(dto), HttpStatus.CREATED);
     }
 
-    //@PutMapping(Constants.ID_PRICES_PARAM)
-    @PutMapping(Constants.ID_PRICES_PARAM)
+    @PutMapping("update")
     @ApiOperation(httpMethod = ApiConstants.PUT_HTTP, value = ApiConstants.PUT_DESC, notes = "")
-    public ResponseEntity<EntyRecmaesusuarimcDto> update(@PathVariable(Constants.ID_REST) Integer id, @RequestBody EntyRecmaesusuarimcDto dto)
+    public ResponseEntity<EntyRecmaesusuarimcResponse> update(@RequestBody EntyRecmaesusuarimcResponse dto)
             throws EBusinessException, MicroEventException {
-        return new ResponseEntity<>(service.update(id, dto), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.updateAll(dto), HttpStatus.CREATED);
     }
-
-    @DeleteMapping(Constants.ID_PRICES_PARAM)
+    @DeleteMapping("delete")
     @ApiOperation(httpMethod = ApiConstants.DELETE_HTTP, value = ApiConstants.DELETE_DESC, notes = "")
-    public void delete(@PathVariable(Constants.ID_REST) Integer id) throws EBusinessException, MicroEventException {
-        service.delete(id);
+    public String delete(@RequestBody List<EntyDeleteDto> dto) throws EBusinessException, MicroEventException {
+        return service.deleteAll(dto);
     }
-
-
 
 }

@@ -34,6 +34,5 @@ public class EntyRecmaesusuarimcDto {
     private String  recKeytm2Remc;
     private String  recKeytm3Remc;
     private String  recKeytm4Remc;
-    private String  recErrauxRemc;
     private Integer recEstregRemc;
 }

@@ -110,10 +110,6 @@ public class EntyRecmaesusuarimc implements Serializable {
     private String  recKeytm4Remc;
 
     @Basic(optional = false)
-    @Column(name = "rec_erraux_remc")
-    private String  recErrauxRemc;
-
-    @Basic(optional = false)
     @Column(name = "rec_estreg_remc")
     private Integer  recEstregRemc;
 

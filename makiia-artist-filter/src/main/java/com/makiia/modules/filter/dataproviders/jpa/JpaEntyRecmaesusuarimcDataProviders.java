@@ -157,6 +157,12 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
                             :old.getRecNroregRemc());
 
             old.setRecNroregReus(
+                    Objects.nonNull(dto.getRecNroregReus())&& !entity.getRecNroregReus().isEmpty()
+                            ? entity.getRecNroregReus()
+                            :old.getRecNroregReus());
+
+
+            old.setRecNtokenReus(
                     Objects.nonNull(dto.getRecNtokenReus())&& !entity.getRecNtokenReus().isEmpty()
                             ? entity.getRecNtokenReus()
                             :old.getRecNtokenReus());
@@ -251,15 +257,12 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
                             ? entity.getRecKeytm4Remc()
                             :old.getRecKeytm4Remc());
 
-            old.setRecErrauxRemc(
-                    Objects.nonNull(dto.getRecErrauxRemc())&& !entity.getRecErrauxRemc().isEmpty()
-                            ? entity.getRecErrauxRemc()
-                            :old.getRecErrauxRemc());
-
             old.setRecEstregRemc(
                     Objects.nonNull(dto.getRecEstregRemc())&& !entity.getRecEstregRemc().equals(0)
                             ? entity.getRecEstregRemc()
                             :old.getRecEstregRemc());
+
+
 
             return saveResponseTranslate.translate(repository.save(old));
         } catch (PersistenceException | DataAccessException e) {
@@ -310,7 +313,6 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
         dto.setRecKeytm2Remc(entyRecmaesusuarimc.getRecKeytm2Remc());
         dto.setRecKeytm3Remc(entyRecmaesusuarimc.getRecKeytm3Remc());
         dto.setRecKeytm4Remc(entyRecmaesusuarimc.getRecKeytm4Remc());
-        dto.setRecErrauxRemc(entyRecmaesusuarimc.getRecErrauxRemc());
         dto.setRecEstregRemc(entyRecmaesusuarimc.getRecEstregRemc());
         return  dto;
     }

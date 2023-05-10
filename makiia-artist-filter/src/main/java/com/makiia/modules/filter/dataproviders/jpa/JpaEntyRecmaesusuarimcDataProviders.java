@@ -36,7 +36,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
     @Qualifier("entyRecmaesusuarimcDtoToEntityTranslate")
     private Translator<EntyRecmaesusuarimcDto, EntyRecmaesusuarimc>dtoToEntityTranslate;
 
-    @Override
+   /* @Override
     public List<EntyRecmaesusuarimcDto> getAll() throws EBusinessException {
         List<EntyRecmaesusuarimcDto> dtos = new ArrayList<>();
         try {
@@ -56,7 +56,43 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
                     .withParentException(e)
                     .buildBusinessException();
         }
+    }*/
+
+    @Override
+    public EntyRecmaesusuarimcResponse getAll() throws EBusinessException {
+        try {
+            List<EntyRecmaesusuarimc> responses = (List<EntyRecmaesusuarimc>) repository.findAll();
+            int currentPage=0;
+            int totalPageSize=responses.size();
+            Pageable pageable = PageRequest.of(currentPage, totalPageSize);
+            //Pageable paginacion
+            Page<EntyRecmaesusuarimc> ResponsePage = null;
+            ResponsePage = repository.findAll(pageable);
+
+            List<EntyRecmaesusuarimc> ListPage = ResponsePage.getContent();
+            List<EntyRecmaesusuarimcDto> content  = ListPage.stream().map(p ->mapToDto(p)).collect(Collectors.toList());
+
+            EntyRecmaesusuarimcResponse response = new EntyRecmaesusuarimcResponse();
+            response.setRspMessage(response.getRspMessage());
+            response.setRspValue(response.getRspValue());
+
+            currentPage = currentPage + 1;
+            String nextPageUrl = "LocalHost";
+            String previousPageUrl = "LocalHost";
+            response.setRspPagination(headResponse(currentPage, totalPageSize, ResponsePage.getTotalElements(), ResponsePage.getTotalPages(), ResponsePage.hasNext(), ResponsePage.hasPrevious(), nextPageUrl, previousPageUrl));
+            response.setRspData(content);
+            return response;
+
+        } catch (PersistenceException | DataAccessException e) {
+            throw ExceptionBuilder.builder()
+                    .withMessage(SearchMessages.SEARCH_ERROR_DESCRIPTION)
+                    .withCode(SearchMessages.SEARCH_ERROR_ID)
+                    .withParentException(e)
+                    .buildBusinessException();
+        }
     }
+
+
     @Override
     public EntyRecmaesusuarimcResponse getAll(int currentPage , int totalPageSize , int parameter, String filter) throws EBusinessException {
         try {
@@ -261,7 +297,6 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
                     Objects.nonNull(dto.getRecEstregRemc())&& !entity.getRecEstregRemc().equals(0)
                             ? entity.getRecEstregRemc()
                             :old.getRecEstregRemc());
-
 
 
             return saveResponseTranslate.translate(repository.save(old));

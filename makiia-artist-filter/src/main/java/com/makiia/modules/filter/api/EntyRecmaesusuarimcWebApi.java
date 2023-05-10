@@ -24,7 +24,7 @@ public class EntyRecmaesusuarimcWebApi {
     private EntyRecmaesusuarimcService service;
     @GetMapping("getall")
     @ApiOperation(httpMethod = ApiConstants.GET_HTTP, value = ApiConstants.GET_DESC, notes = "")
-    public ResponseEntity<List<EntyRecmaesusuarimcDto>> getAll()
+    public ResponseEntity<EntyRecmaesusuarimcResponse> getAll()
             throws EBusinessException, MicroEventException {
         return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
     }

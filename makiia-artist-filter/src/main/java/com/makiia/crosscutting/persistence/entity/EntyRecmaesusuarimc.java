@@ -73,12 +73,12 @@ public class EntyRecmaesusuarimc implements Serializable {
 
     @Basic(optional = false)
     @Column(name = "rec_fecagi_remc")
-    @JsonFormat(pattern="yyyy/MM/dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date recFecagiRemc;
 
     @Basic(optional = false)
     @Column(name = "rec_fecagf_remc")
-    @JsonFormat(pattern="yyyy/MM/dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date  recFecagfRemc;
 
     @Basic(optional = false)

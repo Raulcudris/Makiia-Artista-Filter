@@ -23,9 +23,9 @@ public class EntyRecmaesusuarimcDto {
     private Double  recGeolatReus;
     private Double  recGeolonReus;
     private String  recGenmusReus;
-    @JsonFormat(pattern="yyyy/MM/dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date recFecagiRemc;
-    @JsonFormat(pattern="yyyy/MM/dd")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date   recFecagfRemc;
     private String  recDiapunRemc;
     private String  recKeyfilRemc;

@@ -1,4 +1,14 @@
 package com.makiia.modules.filter.usecase;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+import javax.persistence.PersistenceException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+
 import com.makiia.crosscutting.domain.model.EntyDeleteDto;
 import com.makiia.crosscutting.domain.model.EntyRecmaesusuarimcDto;
 import com.makiia.crosscutting.domain.model.EntyRecmaesusuarimcResponse;
@@ -8,13 +18,6 @@ import com.makiia.crosscutting.messages.SearchMessages;
 import com.makiia.modules.bus.services.UseCase;
 import com.makiia.modules.bus.services.UsecaseServices;
 import com.makiia.modules.filter.dataproviders.jpa.JpaEntyRecmaesusuarimcDataProviders;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import javax.annotation.PostConstruct;
-import javax.persistence.PersistenceException;
-import java.util.List;
-@Log4j2
 @UseCase
 public class EntyRecmaesusuarimcService extends UsecaseServices<EntyRecmaesusuarimcDto, JpaEntyRecmaesusuarimcDataProviders>
 {
@@ -25,10 +28,22 @@ public class EntyRecmaesusuarimcService extends UsecaseServices<EntyRecmaesusuar
         this.ijpaDataProvider = jpaDataProviders;
     }
 
+     private String localYear;
+    private int year;
+
     public EntyRecmaesusuarimcResponse saveBefore(EntyRecmaesusuarimcResponse dto) throws EBusinessException {
         try{
             List<EntyRecmaesusuarimcDto>  dtoAux = this.ijpaDataProvider.save(dto.getRspData());
-            dtoAux = this.ijpaDataProvider.save(dtoAux);
+            localYear = LocalDate.now().format(DateTimeFormatter.ofPattern("yy"));
+            year = Integer.parseInt(localYear);
+             for(EntyRecmaesusuarimcDto dtox : dtoAux){    
+                dtox.setRecNroregRemc(year+""+dtox.getRecUnikeyRemc());
+             }
+            dtoAux = this.ijpaDataProvider.save(dtoAux);       
+            dto.setRspMessage("OK");
+            dto.setRspValue("OK");
+            dto.setRspAppKey("NA");
+            dto.setRspAppKey("NA");
             dto.setRspData(dtoAux);
             return dto;
         }catch (PersistenceException | DataAccessException e){
@@ -47,6 +62,10 @@ public class EntyRecmaesusuarimcService extends UsecaseServices<EntyRecmaesusuar
             for (EntyRecmaesusuarimcDto dtox : dtoAux){
                 dtox = this.ijpaDataProvider.update(dtox.getRecUnikeyRemc(),dtox);
             }
+            dto.setRspMessage("OK");
+            dto.setRspValue("OK");
+            dto.setRspAppKey("NA");
+            dto.setRspAppKey("NA");
             dto.setRspData(dtoAux);
             return dto;
 

@@ -1,4 +1,18 @@
 package com.makiia.modules.filter.dataproviders.jpa;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import javax.persistence.PersistenceException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import com.makiia.crosscutting.domain.model.EntyRecmaesusuarimcDto;
 import com.makiia.crosscutting.domain.model.EntyRecmaesusuarimcResponse;
 import com.makiia.crosscutting.domain.model.PaginationResponse;
@@ -10,18 +24,8 @@ import com.makiia.crosscutting.patterns.Translator;
 import com.makiia.crosscutting.persistence.entity.EntyRecmaesusuarimc;
 import com.makiia.crosscutting.persistence.repository.EntyRecmaesusuarimcRepository;
 import com.makiia.modules.filter.dataproviders.IjpaEntyRecmaesusuarimcDataProviders;
+
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import javax.persistence.PersistenceException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Log4j2
 @DataProvider
@@ -79,7 +83,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
             currentPage = currentPage + 1;
             String nextPageUrl = "LocalHost";
             String previousPageUrl = "LocalHost";
-            response.setRspPagination(headResponse(currentPage, totalPageSize, ResponsePage.getTotalElements(), ResponsePage.getTotalPages(), ResponsePage.hasNext(), ResponsePage.hasPrevious(), nextPageUrl, previousPageUrl));
+            response.setRspPagination(headResponse(currentPage, totalPageSize, content.size(), ResponsePage.getTotalPages(), ResponsePage.hasNext(), ResponsePage.hasPrevious(), nextPageUrl, previousPageUrl));
             response.setRspData(content);
             return response;
 
@@ -115,7 +119,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
             currentPage = currentPage + 1;
             String nextPageUrl = "LocalHost";
             String previousPageUrl = "LocalHost";
-            response.setRspPagination(headResponse(currentPage, totalPageSize, ResponsePage.getTotalElements(), ResponsePage.getTotalPages(), ResponsePage.hasNext(), ResponsePage.hasPrevious(), nextPageUrl, previousPageUrl));
+            response.setRspPagination(headResponse(currentPage, totalPageSize, content.size(), ResponsePage.getTotalPages(), ResponsePage.hasNext(), ResponsePage.hasPrevious(), nextPageUrl, previousPageUrl));
             response.setRspData(content);
             return response;
 

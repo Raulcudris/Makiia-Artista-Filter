@@ -37,7 +37,9 @@ public class EntyRecmaesusuarimcService extends UsecaseServices<EntyRecmaesusuar
             localYear = LocalDate.now().format(DateTimeFormatter.ofPattern("yy"));
             year = Integer.parseInt(localYear);
              for(EntyRecmaesusuarimcDto dtox : dtoAux){    
+                if (dtox.getRecNroregRemc().equals("NA")) {
                 dtox.setRecNroregRemc(year+""+dtox.getRecUnikeyRemc());
+                }
              }
             dtoAux = this.ijpaDataProvider.save(dtoAux);       
             dto.setRspMessage("OK");

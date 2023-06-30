@@ -15,9 +15,9 @@ import com.makiia.crosscutting.domain.model.EntyRecmaesusuarimcResponse;
 import com.makiia.crosscutting.exceptions.ExceptionBuilder;
 import com.makiia.crosscutting.exceptions.Main.EBusinessException;
 import com.makiia.crosscutting.messages.SearchMessages;
-import com.makiia.modules.bus.services.UseCase;
-import com.makiia.modules.bus.services.UsecaseServices;
 import com.makiia.modules.filter.dataproviders.jpa.JpaEntyRecmaesusuarimcDataProviders;
+import com.makiia.modules.filter.services.UseCase;
+import com.makiia.modules.filter.services.UsecaseServices;
 @UseCase
 public class EntyRecmaesusuarimcService extends UsecaseServices<EntyRecmaesusuarimcDto, JpaEntyRecmaesusuarimcDataProviders>
 {
@@ -28,7 +28,7 @@ public class EntyRecmaesusuarimcService extends UsecaseServices<EntyRecmaesusuar
         this.ijpaDataProvider = jpaDataProviders;
     }
 
-     private String localYear;
+    private String localYear;
     private int year;
 
     public EntyRecmaesusuarimcResponse saveBefore(EntyRecmaesusuarimcResponse dto) throws EBusinessException {

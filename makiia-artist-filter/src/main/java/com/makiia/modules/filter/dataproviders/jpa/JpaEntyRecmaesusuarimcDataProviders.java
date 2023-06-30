@@ -25,9 +25,6 @@ import com.makiia.crosscutting.persistence.entity.EntyRecmaesusuarimc;
 import com.makiia.crosscutting.persistence.repository.EntyRecmaesusuarimcRepository;
 import com.makiia.modules.filter.dataproviders.IjpaEntyRecmaesusuarimcDataProviders;
 
-import lombok.extern.log4j.Log4j2;
-
-@Log4j2
 @DataProvider
 public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuarimcDataProviders {
 
@@ -39,28 +36,6 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
     @Autowired
     @Qualifier("entyRecmaesusuarimcDtoToEntityTranslate")
     private Translator<EntyRecmaesusuarimcDto, EntyRecmaesusuarimc>dtoToEntityTranslate;
-
-   /* @Override
-    public List<EntyRecmaesusuarimcDto> getAll() throws EBusinessException {
-        List<EntyRecmaesusuarimcDto> dtos = new ArrayList<>();
-        try {
-            List<EntyRecmaesusuarimc> responses = (List<EntyRecmaesusuarimc>) repository.findAll();
-
-            if (!responses.isEmpty()) {
-                for (EntyRecmaesusuarimc response : responses) {
-                    dtos.add(saveResponseTranslate.translate(response));
-                }
-            }
-
-            return dtos;
-        } catch (PersistenceException | DataAccessException e) {
-            throw ExceptionBuilder.builder()
-                    .withMessage(SearchMessages.SEARCH_ERROR_DESCRIPTION)
-                    .withCode(SearchMessages.SEARCH_ERROR_ID)
-                    .withParentException(e)
-                    .buildBusinessException();
-        }
-    }*/
 
     @Override
     public EntyRecmaesusuarimcResponse getAll() throws EBusinessException {
@@ -98,15 +73,16 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
 
 
     @Override
-    public EntyRecmaesusuarimcResponse getAll(int currentPage , int totalPageSize , int parameter, String filter) throws EBusinessException {
+    public EntyRecmaesusuarimcResponse getAll(int currentPage , int totalPageSize , String parameter, String filter) throws EBusinessException {
         try {
             currentPage = currentPage - 1;
             Pageable pageable = PageRequest.of(currentPage, totalPageSize);
             Page<EntyRecmaesusuarimc> ResponsePage = null;
-            if (parameter == 0) {
-                ResponsePage = repository.findByRecNroregRemc(filter, pageable);
+            if (parameter.equals("PKEY")) {
+                ResponsePage = repository.findByRecUnikeyRemc(Integer.parseInt(filter),pageable);
             }else {
-                ResponsePage = repository.findByRecUnikeyRemc(parameter,pageable);
+                //FKEY
+                ResponsePage = repository.findByRecNroregRemc(filter, pageable);
             }
 
             List<EntyRecmaesusuarimc> ListPage = ResponsePage.getContent();

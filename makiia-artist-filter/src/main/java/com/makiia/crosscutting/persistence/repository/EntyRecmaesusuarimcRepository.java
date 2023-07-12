@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import com.makiia.crosscutting.persistence.entity.EntyRecmaesusuarimc;
 public interface EntyRecmaesusuarimcRepository extends JpaRepository<EntyRecmaesusuarimc,Integer>
 {
-        String FILTER_USUARIO_RECUNIKEYREMC_QUERY = "select c from EntyRecmaesusuarimc c  where c.recUnikeyRemc  = ?1";
+        String FILTER_USUARIO_RECUNIKEYREMC_QUERY = "select c from EntyRecmaesusuarimc c  where c.recUnikeyRemc  = ?1  and c.recEstregRemc = 1";
         @Query(value = FILTER_USUARIO_RECUNIKEYREMC_QUERY)
         Page<EntyRecmaesusuarimc> findByRecUnikeyRemc(Integer filter, Pageable pageable);
-        String FILTER_USUARIO_RECNROREGREMC_QUERY = "select c from EntyRecmaesusuarimc c where UPPER(c.recNroregRemc) like concat('%',upper(?1),'%')";
+        String FILTER_USUARIO_RECNROREGREMC_QUERY = "select c from EntyRecmaesusuarimc c where UPPER(c.recNroregRemc) like concat('%',upper(?1),'%') and c.recEstregRemc = 1";
         @Query(value = FILTER_USUARIO_RECNROREGREMC_QUERY)
         Page<EntyRecmaesusuarimc> findByRecNroregRemc(String filter, Pageable pageable);
 

@@ -31,8 +31,8 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
     @Autowired
     private EntyRecmaesusuarimcRepository repository;
     @Autowired
-    @Qualifier("entyRecmaesusuarimcSaveResponseTranslate")
-    private Translator<EntyRecmaesusuarimc, EntyRecmaesusuarimcDto>saveResponseTranslate;
+    @Qualifier("entyRecmaesusuarimcEntityToDtoTranslate")
+    private Translator<EntyRecmaesusuarimc, EntyRecmaesusuarimcDto>entityToDtoTranslate;
     @Autowired
     @Qualifier("entyRecmaesusuarimcDtoToEntityTranslate")
     private Translator<EntyRecmaesusuarimcDto, EntyRecmaesusuarimc>dtoToEntityTranslate;
@@ -111,7 +111,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
     @Override
     public EntyRecmaesusuarimcDto get(Integer id) throws EBusinessException {
         try {
-            return saveResponseTranslate.translate(repository.findById(id).get());
+            return entityToDtoTranslate.translate(repository.findById(id).get());
         } catch (PersistenceException | DataAccessException e) {
             throw ExceptionBuilder.builder()
                     .withMessage(SearchMessages.SEARCH_ERROR_DESCRIPTION)
@@ -124,7 +124,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
     @Override
     public EntyRecmaesusuarimcDto save(EntyRecmaesusuarimcDto dto) throws EBusinessException {
         try {
-            return saveResponseTranslate.translate(repository.save(dtoToEntityTranslate.translate(dto)));
+            return entityToDtoTranslate.translate(repository.save(dtoToEntityTranslate.translate(dto)));
         } catch (PersistenceException | DataAccessException e) {
             throw ExceptionBuilder.builder()
                     .withMessage(SearchMessages.CREATE_ERROR_DESCRIPTION)
@@ -144,7 +144,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
             }
             dtos = new ArrayList<>();
             for (EntyRecmaesusuarimc entity : repository.saveAll(entities)) {
-                dtos.add(saveResponseTranslate.translate(entity));
+                dtos.add(entityToDtoTranslate.translate(entity));
             }
             return dtos;
         } catch (PersistenceException | DataAccessException e) {
@@ -279,7 +279,7 @@ public class JpaEntyRecmaesusuarimcDataProviders implements IjpaEntyRecmaesusuar
                             :old.getRecEstregRemc());
 
 
-            return saveResponseTranslate.translate(repository.save(old));
+            return entityToDtoTranslate.translate(repository.save(old));
         } catch (PersistenceException | DataAccessException e) {
             throw ExceptionBuilder.builder()
                     .withMessage(SearchMessages.UPDATE_ERROR_DESCRIPTION)
